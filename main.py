@@ -17,7 +17,8 @@ FramePerSec = pygame.time.Clock()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Simulation")
 
-startanicon = 10
+#starting count of spawned entities
+startanicon = 4
 #########################################
 
 #Color vars
@@ -27,31 +28,29 @@ RED = (255, 0, 0)
 
 #simple class setup
 class BaseSur:
-    #mutations
-    Mut_SIZE = 0
-    Mut_HP = 0
-    Mut_ATK = 0
-    Mut_SPE = 0
+    def __init__(self, Mut_SIZE, Mut_HP, Mut_ATK, Mut_SPE, size, health, attack, speed, posX, posY):
+        #mutations
+        self.Mut_SIZE = Mut_SIZE
+        self.Mut_HP = Mut_HP
+        self.Mut_ATK = Mut_ATK
+        self.Mut_SPE = Mut_SPE
 
-    #base stats, and how they calculate
-    size = 1 + Mut_SIZE
-    health = size * 1.25 + Mut_HP
-    attack = size * 1.33 + Mut_ATK
-    speed = health * 1.03 + Mut_SPE
+        #base stats, and how they calculate
+        self.size = size * Mut_SIZE
+        self.health = health + size * 1.25 + Mut_HP
+        self.attack = attack + size * 1.33 + Mut_ATK
+        self.speed = speed + health * 0.05 + Mut_SPE
 
-    #extra
-    posX = random.randint(0,700)
-    posY = random.randint(0,700)
+        #extra
+        self.posX = posX 
+        self.posY = posY
 
 #########################################
 #generate starting animals
-countnam = 0
-for i in range(startanicon):
-    tempname = "animal" + str(countnam)
-    print(tempname)
-    tempname = BaseSur()
-    countnam += 1
-print(BaseSur)
+animal1 = BaseSur(50, 0, 0, 0, 1, 10, 2, 0, random.randint(0,700), random.randint(0,700))
+animal2 = BaseSur(0, 0, 0, 0, 1, 10, 2, 0, random.randint(0,700), random.randint(0,700))
+animal3 = BaseSur(0, 0, 0, 0, 1, 10, 2, 0, random.randint(0,700), random.randint(0,700))
+animal4 = BaseSur(0, 0, 0, 0, 1, 10, 2, 0, random.randint(0,700), random.randint(0,700))
 
 #gameloop
 while True:
@@ -65,11 +64,24 @@ while True:
 
     #draw animals
     countnam = 0
-    for i in range(startanicon):
-        tempname = "animal" + str(countnam)
-        pygame.draw.rect(screen, BLACK, pygame.Rect(tempname.posX, tempname.posY, tempname.Mut_SIZE,  tempname.Mut_SIZE))
-        countnam += 1
-    BaseSur.health = 1
+    pygame.draw.rect(screen, BLACK, pygame.Rect(animal1.posX, animal1.posY, animal1.Mut_SIZE,  animal1.Mut_SIZE))
+    pygame.draw.rect(screen, BLACK, pygame.Rect(animal1.posX, animal1.posY, animal1.Mut_SIZE,  animal1.Mut_SIZE))
+    pygame.draw.rect(screen, BLACK, pygame.Rect(animal1.posX, animal1.posY, animal1.Mut_SIZE,  animal1.Mut_SIZE))
+    pygame.draw.rect(screen, BLACK, pygame.Rect(animal1.posX, animal1.posY, animal1.Mut_SIZE,  animal1.Mut_SIZE))
+
+    #movement
+    animal1.posX += random.randint(-10,10) * animal1.speed
+    animal1.posY += random.randint(-10,10) * animal1.speed
+    while animal1.posX > 650:
+        animal1.posX = animal1.posX - 10.5 * animal1.speed
+    while animal1.posY > 650:
+        animal1.posY = animal1.posY - 10.5 * animal1.speed
+
+    #check if touching
+
+    #if touching food
+
+    #if touching each other
 
     #update
     pygame.display.update()
